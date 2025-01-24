@@ -103,8 +103,61 @@ function main(player){
     if(playerPoints == 5 || computerPoints == 5)
         result(playerScore, computerScore);
 }
-
-
+// Add these sound effect variables
+    const winSound = new Audio('win-sound.mp3');
+    const loseSound = new Audio('lose-sound.mp3');
+    const tieSound = new Audio('tie-sound.mp3'); 
+    
+    function roundResult(player, computer, playerScore, computerScore){
+        let infoTilte = document.querySelector('.infoTitle')
+        let infoMessage =document.querySelector('.infoMessage')
+        
+        // Add screen shake for dramatic effect
+        document.body.classList.add('shake');
+        setTimeout(() => {
+            document.body.classList.remove('shake');
+        }, 500);
+    
+        if(player == computer){
+            infoTilte.textContent = "It's a tie!"
+            infoMessage.textContent = `${player} ties with ${computer}`;
+            tieSound.play();
+            
+            // Add visual tie effect
+            playerScore.style.color = '#FFD700';
+            computerScore.style.color = '#FFD700';
+            setTimeout(() => {
+                playerScore.style.color = '';
+                computerScore.style.color = '';
+            }, 1000);
+        }
+        else if(player == "rock" && computer == "scissor" ||
+        player == "scissor" && computer == "paper" ||
+        player == "paper" && computer == "rock"){
+            infoTilte.textContent = "You won!"
+            playerScore.textContent =  ++playerPoints
+            infoMessage.textContent = `${player} beats ${computer}`;
+            winSound.play();
+            
+            // Add winning animation
+            playerScore.classList.add('win-animation');
+            setTimeout(() => {
+                playerScore.classList.remove('win-animation');
+            }, 1000);
+        }
+        else{
+            infoTilte.textContent = "You Lost!"
+            computerScore.textContent =  ++computerPoints
+            infoMessage.textContent = `${player} is beaten by ${computer}`;
+            loseSound.play();
+            
+            // Add losing animation
+            computerScore.classList.add('lose-animation');
+            setTimeout(() => {
+                computerScore.classList.remove('lose-animation');
+            }, 1000);
+        }
+    }
 // function computerPlay() {
 //     const options = ["rock", "paper", "scissors"];
 //     return options[Math.floor(Math.random() * options.length)];
